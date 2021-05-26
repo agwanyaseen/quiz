@@ -1,7 +1,12 @@
 
+|  Project  |  Responsibility |
+| ------------ | ------------ |
+|  quiz_client|   Holds Flutter mobile app code |
+| quiz_backend|  Holds server side code written in dart |
+|quiz_shared| To put some shared logic between server and client |
+
 
 ## Running Dart Backend
-## Running with the Dart SDK
 
 You can run the example with the [Dart SDK](https://dart.dev/get-dart)
 like this:
