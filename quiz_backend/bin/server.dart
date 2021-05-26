@@ -5,10 +5,14 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf_router/shelf_router.dart';
 
+import 'endpoints/quiz_endpoint.dart';
+
 // Configure routes.
 final _router = Router()
   ..get('/', _rootHandler)
-  ..get('/echo/<message>', _echoHandler);
+  ..get('/echo/<message>', _echoHandler)
+  ..post('/api/quiz/<quizname>',addQuizHandler)
+  ..get('/api/quiz',retrieveQuiz);
 
 Response _rootHandler(Request req) {
   return Response.ok('Hello, World!\n');
