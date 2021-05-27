@@ -13,9 +13,9 @@ class QuizView extends StatelessWidget {
   void _handleNewQuizNamePressed() {
 
     var quizName = _quizNamecontroller.text;
-    
-  }
 
+  }
+  
   void _openCreateQuizDialogBox(BuildContext context) {
     showDialog(
       context: context,
