@@ -1,19 +1,17 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:quiz_shared/src/model/quiz_name.dart';
 
 class QuizView extends StatelessWidget {
   final TextEditingController _quizNamecontroller = TextEditingController();
-  void _onDeletePressed() {
-    //Delete Logic
-  }
-
-  void _onQuizNamePressed() {
-    //Navigate to Quiz Question page
-  }
-
-  void _handleNewQuizNamePressed() {
-
-    var quizName = _quizNamecontroller.text;
-
+  
+    void _handleNewQuizNamePressed() async {
+      var quizName = _quizNamecontroller.text;
+      int id;
+      await addQuestions(quizName).then((value) {
+        //Provider to add data;
+      });
   }
   
   void _openCreateQuizDialogBox(BuildContext context) {
@@ -34,40 +32,7 @@ class QuizView extends StatelessWidget {
     );
   }
 
-  Widget _buildQuizNameListTile(BuildContext context) {
-    return Material(
-      elevation: 2,
-      type: MaterialType.card,
-      shadowColor: Colors.grey,
-      child: ListTile(
-          trailing: IconButton(
-            icon: Icon(
-              Icons.delete,
-              color: Theme.of(context).primaryColor,
-            ),
-            onPressed: _onDeletePressed,
-          ),
-          contentPadding: const EdgeInsets.all(10),
-          title: Text(
-            'Quiz Name',
-            style: TextStyle(color: Theme.of(context).primaryColor),
-          ),
-          hoverColor: Colors.red,
-          onTap: _onQuizNamePressed),
-    );
-  }
-
-  Widget _buildQuizList(List<QuizName> quiz) {
-    return ListView.separated(
-        itemBuilder: (context, index) {
-          return _buildQuizNameListTile(context);
-        },
-        separatorBuilder: (context, intdex) {
-          return SizedBox(height: 8);
-        },
-        itemCount: 10);
-  }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,7 +46,7 @@ class QuizView extends StatelessWidget {
             //Show SnackBar or Dialog Box;
           }
           if (quizSnapshot.hasData) {
-            return _buildQuizList(quizSnapshot.data ?? <QuizName>[]);
+            return QuizList(quizSnapshot.data ?? <QuizName>[]);
           }
           return Center(child: const CircularProgressIndicator());
         },
@@ -94,15 +59,71 @@ class QuizView extends StatelessWidget {
   }
 }
 
+
+class QuizList extends StatelessWidget {
+  final List<QuizName> quizNames;
+  QuizList(this.quizNames);
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+        itemBuilder: (context, index) {
+          return QuizNameListTile(quizNames[index]);
+        },
+        separatorBuilder: (context, intdex) {
+          return SizedBox(height: 8);
+        },
+        itemCount: 10);
+  }
+}
+
+
+class QuizNameListTile extends StatelessWidget {
+  final QuizName _quizName;
+  QuizNameListTile(this._quizName);
+  void _onDeletePressed(int id){
+
+  }
+
+  void _onQuizTilePressed(){
+
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      elevation: 2,
+      type: MaterialType.card,
+      shadowColor: Colors.grey,
+      child: ListTile(
+          trailing: IconButton(
+            icon: Icon(
+              Icons.delete,
+              color: Theme.of(context).primaryColor,
+            ),
+            onPressed: ()=>_onDeletePressed(_quizName.id),
+          ),
+          contentPadding: const EdgeInsets.all(10),
+          title: Text(
+            _quizName.quizName,
+            style: TextStyle(color: Theme.of(context).primaryColor),
+          ),
+          onTap: _onQuizTilePressed),
+    );
+  }
+}
+//Mock asynchrounous/Api code, Replace with real APi calls in Future  
+
 Future<List<QuizName>> getQuestions() {
   List<QuizName> quiz =
-      List.generate(100, (index) => QuizName('Quiza Name: $index', index));
+      List.generate(100, (index) => QuizName('Quiz Name: $index', index));
   return Future.delayed(Duration(seconds: 2), () => quiz);
 }
 
-class QuizName {
-  String quiz;
-  int id;
 
-  QuizName(this.quiz, this.id);
+Future<int> addQuestions(String name){
+  int randomId = Random().nextInt(500);
+  return Future.delayed(Duration(seconds:2),()=>randomId);  
+}
+
+Future<void> removeQuestions(int id){
+  return Future.delayed(Duration(seconds:2),()=>print('Removed'));  
 }
