@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_client/screens/quiz_view.dart';
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 

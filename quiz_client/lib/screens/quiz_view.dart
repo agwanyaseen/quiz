@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:quiz_client/services/quiz_services.dart';
 import 'package:quiz_shared/src/model/quiz_name.dart';
 
 class QuizView extends StatelessWidget {
@@ -40,13 +41,14 @@ class QuizView extends StatelessWidget {
         title: Text('Quiz Manager'),
       ),
       body: FutureBuilder<List<QuizName>>(
-        future: getQuestions(),
+        future: getQuiz(),
         builder: (context, quizSnapshot) {
           if (quizSnapshot.hasError) {
             //Show SnackBar or Dialog Box;
           }
           if (quizSnapshot.hasData) {
-            return QuizList(quizSnapshot.data ?? <QuizName>[]);
+            var data = quizSnapshot.data ?? <QuizName>[];
+            return data.length>0?QuizList(data):Center(child: Text('No Quiz Found'));
           }
           return Center(child: const CircularProgressIndicator());
         },
