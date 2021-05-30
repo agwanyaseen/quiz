@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dartz/dartz.dart';
 import 'package:quiz_shared/src/model/quiz_name.dart';
 import 'package:http/http.dart' as http;
 const String _baseUrl='http://localhost:59933/api'; 
@@ -21,11 +22,12 @@ Future<List<QuizName>> getQuiz() async {
   return quizNames;
 }
 
-Future<bool> addQuiz(String quizName) async {
-  var response = await http.post(Uri.parse('$_baseUrl/quiz/$quizName'));
+Future<Either<String, String>> addQuiz(String quizName) async {
+  var response = await http.post(Uri.parse('$_baseUrl/quiz/?quizName=$quizName'));
 
+  var jsonResponse = jsonDecode(response.body) as Map;
   if(response.statusCode == 200){
-    return true;
+    return Right(jsonResponse['id'] as String);
   }
-  return false;
+  return Left(jsonResponse['error'] as String);
 }

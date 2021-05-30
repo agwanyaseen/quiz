@@ -5,31 +5,11 @@ import 'package:quiz_client/services/quiz_services.dart';
 import 'package:quiz_shared/src/model/quiz_name.dart';
 
 class QuizView extends StatelessWidget {
-  final TextEditingController _quizNamecontroller = TextEditingController();
-  
-    void _handleNewQuizNamePressed() async {
-      var quizName = _quizNamecontroller.text;
-      int id;
-      await addQuestions(quizName).then((value) {
-        //Provider to add data;
-      });
-  }
   
   void _openCreateQuizDialogBox(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        content: TextField(
-          controller: _quizNamecontroller,
-        ),
-        actions: [
-          ElevatedButton(
-              onPressed: _handleNewQuizNamePressed, child: Text('Add'))
-        ],
-        title: Text('New Quiz'),
-      ),
-
-      
+      builder: (context) => NewQuizNameDialog(),
     );
   }
 
@@ -128,4 +108,53 @@ Future<int> addQuestions(String name){
 
 Future<void> removeQuestions(int id){
   return Future.delayed(Duration(seconds:2),()=>print('Removed'));  
+}
+
+
+class NewQuizNameDialog extends StatefulWidget {
+  @override
+  _NewQuizNameDialogState createState() => _NewQuizNameDialogState();
+}
+
+class _NewQuizNameDialogState extends State<NewQuizNameDialog> {
+  final TextEditingController _quizNamecontroller = TextEditingController();
+
+  String? _errorText=null; 
+
+  void _handleNewQuizNamePressed() async {
+    
+      var quizName = _quizNamecontroller.text;
+      int quizId;
+      await addQuiz(quizName).then((value) {
+        value.fold((error) {
+          setState(() {
+            _errorText = error;
+          });
+        }, (id)  {
+          setState(()=>_errorText=null);
+          quizId = int.parse(id);
+          //Add To Provider 
+          //Navigate to Build Quiz Question Page
+          
+        });
+      }).then((value) => null);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    
+    return AlertDialog(
+        content: TextField(
+          controller: _quizNamecontroller,
+          decoration: InputDecoration(
+            errorText:_errorText, 
+            ),
+        ),
+        actions: [
+          ElevatedButton(
+              onPressed: _handleNewQuizNamePressed, child: Text('Add'))
+        ],
+        title: Text('New Quiz'),
+      );
+  }
 }

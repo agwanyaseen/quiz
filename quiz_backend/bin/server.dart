@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:quiz_shared/quiz_shared.dart';
+
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf_router/shelf_router.dart';
@@ -12,7 +12,7 @@ import 'endpoints/quiz_endpoint.dart';
 final _router = Router()
   ..get('/', _rootHandler)
   ..get('/echo/<message>', _echoHandler)
-  ..post('/api/quiz/<quizname>',addQuizHandler)
+  ..post('/api/quiz/',addQuizHandler)
   ..get('/api/quiz',retrieveQuiz);
 
 Response _rootHandler(Request req) {

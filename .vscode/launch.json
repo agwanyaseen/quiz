@@ -13,7 +13,8 @@
         },
         {
             "name": "quiz_backend",
-            "request": "launch",
+            "request":"launch",
+            "program": "quiz_backend/bin/server.dart",
             "type": "dart"
         }
     ]
