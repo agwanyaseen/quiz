@@ -124,7 +124,7 @@ class _NewQuizNameDialogState extends State<NewQuizNameDialog> {
   void _handleNewQuizNamePressed() async {
     
       var quizName = _quizNamecontroller.text;
-      int quizId;
+      int quizId = 0;
       await addQuiz(quizName).then((value) {
         value.fold((error) {
           setState(() {
@@ -138,6 +138,8 @@ class _NewQuizNameDialogState extends State<NewQuizNameDialog> {
           
         });
       }).then((value) => null);
+
+      print(quizId);
   }
 
   @override
