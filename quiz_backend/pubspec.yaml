@@ -13,6 +13,7 @@ dependencies:
   shelf_router: ^1.0.0
   supabase: ^0.0.1-dev.16
   shelf_cors_headers: ^0.1.1
+  jaguar_orm: ^2.2.7
   quiz_shared:
     path: ../quiz_shared/
 

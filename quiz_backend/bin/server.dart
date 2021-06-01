@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'dart:convert';
 
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
@@ -7,6 +7,7 @@ import 'package:shelf_router/shelf_router.dart';
 import 'package:shelf_cors_headers/shelf_cors_headers.dart';
 
 import 'endpoints/quiz_endpoint.dart';
+import 'utils/secrets.dart';
 
 // Configure routes.
 final _router = Router()
@@ -25,6 +26,17 @@ Response _echoHandler(Request request) {
 }
 
 void main(List<String> args) async {
+  registerSecrets();
+  await configureShelf();
+}
+
+void registerSecrets() async {
+  final fileContents = await File('assets/db_secrets.json').readAsString();
+  final jsonContent = jsonDecode(fileContents);
+  final mapContent = jsonContent as Map; 
+  DbSecrets.registerCredentials(mapContent['host'] as String,mapContent['dbname'] as String,mapContent['port'] as String,mapContent['user'] as String,mapContent['password'] as String);
+} 
+Future<void>configureShelf() async {
   final overrideHeaders = {
     ACCESS_CONTROL_ALLOW_ORIGIN: '*',
     'Content-Type': 'application/json;charset=utf-8'
