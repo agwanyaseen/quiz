@@ -14,7 +14,8 @@ final _router = Router()
   ..get('/', _rootHandler)
   ..get('/echo/<message>', _echoHandler)
   ..post('/api/quiz/',addQuizHandler)
-  ..get('/api/quiz',retrieveQuiz);
+  ..get('/api/quiz',retrieveQuiz)
+  ..delete('/api/quiz/<id>', removeQuizHandler);
 
 Response _rootHandler(Request req) {
   return Response.ok('Hello, World!\n');
@@ -34,7 +35,7 @@ void registerSecrets() async {
   final fileContents = await File('assets/db_secrets.json').readAsString();
   final jsonContent = jsonDecode(fileContents);
   final mapContent = jsonContent as Map; 
-  DbSecrets.registerCredentials(mapContent['host'] as String,mapContent['dbname'] as String,mapContent['port'] as String,mapContent['user'] as String,mapContent['password'] as String);
+  DbSecrets.registerCredentials(supabasekey: mapContent['key'],supabaseUrl: mapContent['url']);
 } 
 Future<void>configureShelf() async {
   final overrideHeaders = {

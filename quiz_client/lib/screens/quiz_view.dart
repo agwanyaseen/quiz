@@ -54,7 +54,7 @@ class QuizList extends StatelessWidget {
         separatorBuilder: (context, intdex) {
           return SizedBox(height: 8);
         },
-        itemCount: 10);
+        itemCount: quizNames.length);
   }
 }
 

@@ -11,7 +11,5 @@ class QuizName  {
     };
   }
 
- QuizName fromJson(Map<String,dynamic> quizResponse){
-    return QuizName(quizResponse['name'],int.parse(quizResponse['id']));
-  }
+ QuizName.fromJson(Map quizResponse) : quizName= quizResponse['name'],id = quizResponse['id'] as int;
 }
