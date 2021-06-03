@@ -69,12 +69,12 @@ class _BuildQuizOptionTileState extends State<BuildQuizOptionTile> {
           validator: (String? value){
             if(value!=null){
               if(value.isEmpty)
-                return null;
+                return 'Name Cannot be Empty';
               else
-                return value;
+                return null;
             }
             else
-              return value;
+              return null;
           },
         ),
         secondary: IconButton(icon: Icon(Icons.delete),onPressed: _handleOptionsDelete,),

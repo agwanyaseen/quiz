@@ -11,4 +11,10 @@ class QuizDataProvider extends ChangeNotifier{
     _quizNames.add(QuizName(name,id));
   }
 
+  void removeQuiz(int id){
+    final quiz = _quizNames.singleWhere((element) => element.id ==id);
+    _quizNames.remove(quiz);
+    notifyListeners();
+  }
+
 } 

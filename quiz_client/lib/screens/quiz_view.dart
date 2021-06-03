@@ -132,7 +132,7 @@ class _NewQuizNameDialogState extends State<NewQuizNameDialog> {
           });
         }, (id)  {
           setState(()=>_errorText=null);
-          quizId = int.parse(id);
+          quizId = id;
           //Add To Provider 
           //Navigate to Build Quiz Question Page
           

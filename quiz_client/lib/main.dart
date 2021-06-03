@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quiz_client/providers/quiz_options_provider.dart';
 import 'package:quiz_client/screens/quiz_view.dart';
+
+import 'providers/quiz_data_provider.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
@@ -19,7 +21,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: MultiProvider(
-        providers: [ChangeNotifierProvider.value(value: QuizOptionsProvider())],
+        providers: [
+          ChangeNotifierProvider.value(value: QuizOptionsProvider()),
+          ChangeNotifierProvider(create: (_)=>QuizDataProvider()),
+        ],
         child: QuizView(),),
     );
   }

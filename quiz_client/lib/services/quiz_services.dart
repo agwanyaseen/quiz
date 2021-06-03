@@ -22,12 +22,22 @@ Future<List<QuizName>> getQuiz() async {
   return quizNames;
 }
 
-Future<Either<String, String>> addQuiz(String quizName) async {
+Future<Either<String, int>> addQuiz(String quizName) async {
   var response = await http.post(Uri.parse('$_baseUrl/quiz/?quizName=$quizName'));
 
   var jsonResponse = jsonDecode(response.body) as Map;
   if(response.statusCode == 200){
-    return Right(jsonResponse['id'] as String);
+    return Right(jsonResponse['id'] as int);
   }
   return Left(jsonResponse['error'] as String);
+}
+
+Future<Either<String,bool>> removeQuiz(int id)  async {
+  var response = await http.delete(Uri.parse('$_baseUrl/quiz/$id'));
+
+  if(response.statusCode==200){
+    return Right(true);
+  }
+  return Left((jsonDecode(response.body) as Map)['error']);
+
 }
