@@ -6,6 +6,7 @@ import 'package:shelf/shelf_io.dart';
 import 'package:shelf_router/shelf_router.dart';
 import 'package:shelf_cors_headers/shelf_cors_headers.dart';
 
+import 'endpoints/question_endpoints.dart';
 import 'endpoints/quiz_endpoint.dart';
 import 'utils/secrets.dart';
 
@@ -15,7 +16,8 @@ final _router = Router()
   ..get('/echo/<message>', _echoHandler)
   ..post('/api/quiz/',addQuizHandler)
   ..get('/api/quiz',retrieveQuiz)
-  ..delete('/api/quiz/<id>', removeQuizHandler);
+  ..delete('/api/quiz/<id>', removeQuizHandler)
+  ..get('/api/questions/<id>', getquizQuestionsHandler);
 
 Response _rootHandler(Request req) {
   return Response.ok('Hello, World!\n');

@@ -34,13 +34,13 @@ class TableName {
   static const String quizquestions = 'quiz_questions';
 }
 
-class QuizQuestion {
+class QuizQuestionConstants {
   static const String id = 'id';
   static const String question = 'question';
-  static const String quizId = 'quizId';
+  static const String quizId = 'quizid';
 }
 
-class QuizOption  {
+class QuizOptionConstants {
   static const String id = 'id';
   static const String option= 'option';
   static const String questionId = 'questionid';
