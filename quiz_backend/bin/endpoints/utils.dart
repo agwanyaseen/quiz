@@ -26,3 +26,23 @@ SupabaseClient getSupabaseClient()  {
   final secrets =DbSecrets.secrets;
   return  SupabaseClient(secrets?.supabaseUrl??'', secrets?.supabasekey??'');
 }
+
+
+class TableName {
+  static const String quiz = 'quiz';
+  static const String quizoptions = 'quiz_options';
+  static const String quizquestions = 'quiz_questions';
+}
+
+class QuizQuestion {
+  static const String id = 'id';
+  static const String question = 'question';
+  static const String quizId = 'quizId';
+}
+
+class QuizOption  {
+  static const String id = 'id';
+  static const String option= 'option';
+  static const String questionId = 'questionid';
+  static const String  isCorrect = 'iscorrect';
+}
