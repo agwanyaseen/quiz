@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:quiz_shared/src/model/quiz_name.dart';
 import 'package:http/http.dart' as http;
-const String _baseUrl='http://localhost:59933/api'; 
+
+import '../constants.dart';
+
 
 Future<List<QuizName>> getQuiz() async {
-  final response = await http.get(Uri.parse('$_baseUrl/quiz'));
+  final response = await http.get(Uri.parse('$baseUrl/quiz'));
   var quizNames = <QuizName>[];
   if(response.statusCode==200){
     var jsonResponse = jsonDecode(response.body);
@@ -23,7 +25,7 @@ Future<List<QuizName>> getQuiz() async {
 }
 
 Future<Either<String, int>> addQuiz(String quizName) async {
-  var response = await http.post(Uri.parse('$_baseUrl/quiz/?quizName=$quizName'));
+  var response = await http.post(Uri.parse('$baseUrl/quiz/?quizName=$quizName'));
 
   var jsonResponse = jsonDecode(response.body) as Map;
   if(response.statusCode == 200){
@@ -33,7 +35,7 @@ Future<Either<String, int>> addQuiz(String quizName) async {
 }
 
 Future<Either<String,bool>> removeQuiz(int id)  async {
-  var response = await http.delete(Uri.parse('$_baseUrl/quiz/$id'));
+  var response = await http.delete(Uri.parse('$baseUrl/quiz/$id'));
 
   if(response.statusCode==200){
     return Right(true);
