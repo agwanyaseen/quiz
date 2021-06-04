@@ -7,10 +7,21 @@ class QuizDataProvider extends ChangeNotifier{
 
   List<QuizName> get quizNames => [..._quizNames];
 
+  static  final QuizDataProvider _object = QuizDataProvider._();
+  factory QuizDataProvider(){
+    return _object;
+  }
+  QuizDataProvider._();
+
+
   void addQuiz(String name,int id){
-    _quizNames.add(QuizName(name,id));
+    addInitialData(name, id);
+    notifyListeners();
   }
 
+  void addInitialData(String name, int id) {
+    _quizNames.add(QuizName(name,id));
+  }
   void removeQuiz(int id){
     final quiz = _quizNames.singleWhere((element) => element.id ==id);
     _quizNames.remove(quiz);

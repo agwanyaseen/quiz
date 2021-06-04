@@ -1,22 +1,28 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:quiz_client/providers/quiz_data_provider.dart';
 import 'package:quiz_client/services/quiz_services.dart';
+import 'package:quiz_client/widgets/new_quiz_name_dialog.dart';
 import 'package:quiz_client/widgets/quiz_list.dart';
 import 'package:quiz_shared/src/model/quiz_name.dart';
 
 class QuizView extends StatelessWidget {
   
-  void _openCreateQuizDialogBox(BuildContext context) {
-    showDialog(
+  void _openCreateQuizDialogBox(BuildContext context) async {
+    await showDialog(
       context: context,
-      builder: (context) => NewQuizNameDialog(),
+      builder: (ctx) => ChangeNotifierProvider.value(
+        value: QuizDataProvider(),
+        child: NewQuizNameDialog()),
     );
   }
 
   
   @override
   Widget build(BuildContext context) {
+    var quizDataProvider = Provider.of<QuizDataProvider>(context,listen: false);
     return Scaffold(
       appBar: AppBar(
         title: Text('Quiz Manager'),
@@ -29,7 +35,8 @@ class QuizView extends StatelessWidget {
           }
           if (quizSnapshot.hasData) {
             var data = quizSnapshot.data ?? <QuizName>[];
-            return data.length>0?QuizList(data):Center(child: Text('No Quiz Found'));
+            data.forEach((element) {quizDataProvider.addInitialData(element.quizName, element.id);});
+            return data.length>0?QuizList():Center(child: Text('No Quiz Found'));
           }
           return Center(child: const CircularProgressIndicator());
         },
@@ -44,69 +51,3 @@ class QuizView extends StatelessWidget {
 
 
 
-
-
-
-//Mock asynchrounous/Api code, Replace with real APi calls in Future  
-
-Future<int> addQuestions(String name){
-  int randomId = Random().nextInt(500);
-  return Future.delayed(Duration(seconds:2),()=>randomId);  
-}
-
-Future<void> removeQuestions(int id){
-  return Future.delayed(Duration(seconds:2),()=>print('Removed'));  
-}
-
-
-class NewQuizNameDialog extends StatefulWidget {
-  @override
-  _NewQuizNameDialogState createState() => _NewQuizNameDialogState();
-}
-
-class _NewQuizNameDialogState extends State<NewQuizNameDialog> {
-  final TextEditingController _quizNamecontroller = TextEditingController();
-
-  String? _errorText=null; 
-
-  void _handleNewQuizNamePressed() async {
-    
-      var quizName = _quizNamecontroller.text;
-      int quizId = 0;
-      await addQuiz(quizName).then((value) {
-        value.fold((error) {
-          setState(() {
-            _errorText = error;
-          });
-        }, (id)  {
-          setState(()=>_errorText=null);
-          quizId = id;
-          //Add To Provider 
-          //Navigate to Build Quiz Question Page
-          Navigator.pop(context);
-          
-        });
-      }).then((value) => null);
-
-      print(quizId);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    
-    return AlertDialog(
-      
-        content: TextField(
-          controller: _quizNamecontroller,
-          decoration: InputDecoration(
-            errorText:_errorText, 
-            ),
-        ),
-        actions: [
-          ElevatedButton(
-              onPressed: _handleNewQuizNamePressed, child: Text('Add'))
-        ],
-        title: Text('New Quiz'),
-      );
-  }
-}
